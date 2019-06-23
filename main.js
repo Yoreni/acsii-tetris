@@ -337,11 +337,22 @@ function move(e)
 				}
 			}
 		}
-		else if(key == 38) //up (rotate)
+		else if(key == 38) //up (rotate right)
 		{
 			if(canRotate())
 			{
-				rotatePlayer();
+				rotatePlayer("right");
+			}
+			if(player.flash > 0)
+			{
+				player.flash += extraLockTime(level);
+			}
+		}
+		else if(key == 90) //up (rotate left)
+		{
+			if(canRotate())
+			{
+				rotatePlayer("left");
 			}
 			if(player.flash > 0)
 			{
@@ -422,9 +433,13 @@ function move(e)
 	}
 }
 
-function rotatePlayer()
+function rotatePlayer(direction)
 {
 	var identity = [[0,-1],[1,0]]
+	if(direction == "right")
+	{
+		var identity = [[0,1],[-1,0]]
+	}
 	for(a = 0 ; a < 4 ; a++)
 	{
 		//MATHS YAY
