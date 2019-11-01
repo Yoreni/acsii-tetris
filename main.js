@@ -6,8 +6,14 @@ var level = 1;
 var start = (new Date()).getTime();
 var hold = 0;
 
-var next = [randint(1,7),randint(1,7),randint(1,7)]
-var levelUp = 1000 * (Math.pow(2.2,Math.sqrt(level - 1)))
+var next = [];
+var levelUp = 1000 * (Math.pow(2.2,Math.sqrt(level - 1)));
+var bag = [1,2,3,4,5,6,7];
+bag = shuffle(bag);
+
+next.push(bag.shift());
+next.push(bag.shift());
+next.push(bag.shift());
 
 var screenText = 
 [
@@ -93,7 +99,13 @@ for(a = 0 ; a < 4 ; a++)
 
 var lastTime = 0;
 
-nextBrick(randint(1,7));
+nextBrick(next.shift());
+if(bag.length == 0)
+{
+	bag = [1,2,3,4,5,6,7];
+	bag = shuffle(bag);
+}
+next.push(bag.shift());
 
 function drawLine(line)
 {
@@ -189,6 +201,19 @@ function replaceAt(string, index, replace)
 function randint(min,max)
 {
 	return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function shuffle(list)
+{
+	for(var a = 0 ; a < list.length ;  a++)
+	{
+		var b = list[a];
+		var randomPlace = Math.floor(Math.random() * list.length);
+		var c = list[randomPlace]
+		list[randomPlace] = b;
+		list[a] = c;
+	}
+	return list;
 }
 
 function nextBrick(brick)
@@ -419,9 +444,13 @@ function move(e)
 			}
 			else
 			{
-				nextBrick(next[0]);
-				next.splice(0,1);
-				next.push(randint(1,7));
+				nextBrick(next.shift());
+				if(bag.length == 0)
+				{
+					bag = [1,2,3,4,5,6,7];
+					bag = shuffle(bag);
+				}
+				next.push(bag.shift());
 			}
 			hold = temp;
 		}
@@ -807,9 +836,13 @@ function gameLoop()
 					cleared.show = time + 400;
 				}
 				
-				nextBrick(next[0]);
-				next.splice(0,1);
-				next.push(randint(1,7))
+				nextBrick(next.shift());
+				if(bag.length == 0)
+				{
+					bag = [1,2,3,4,5,6,7];
+					bag = shuffle(bag);
+				}
+				next.push(bag.shift());
 			}
 			else
 			{
